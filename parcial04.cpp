@@ -3,11 +3,12 @@
 using namespace std;
 
 int contar_apariciones(const char * str, const char* clave, int n1, int n2);
+bool esDelimitador(char c);
 int mas_coincidencias(int * arr, int n);
 void imprimir_frase(const char * str, int n);
 
 int main(){
-    const char* str1 = "El agua limpia es esencial para la vida";
+    const char* str1 = "El ;agua, limpia es esencial para la vida, aguacate, aguacate";
     const char* str2 = "Cuidar el agua, es cuidar la vida, el agua es vida";
     const char* str3 = "El aire y el agua son vitales";
 
@@ -61,7 +62,7 @@ int contar_apariciones(const char * str, const char* clave, int n1, int n2){
                 break;
             }
         }
-        if (ctr1 == n2) 
+        if (ctr1 == n2 && (i==0 && esDelimitador(*(str+n2)) || (i== n1-n2 && esDelimitador(*(str+n1-n2-1))) || ( esDelimitador(*(str+i-1)) && esDelimitador(*(str+i + n2)) ) ) ) 
         {
             ctr2++;
         }
@@ -71,6 +72,11 @@ int contar_apariciones(const char * str, const char* clave, int n1, int n2){
     return ctr2;
     
 }
+bool esDelimitador(char c){
+    const char* delim = " ,.;:!?";
+    return strchr(delim, c) != nullptr;
+}
+
 int mas_coincidencias(int * arr, int n){
     int max = *(arr+0);
     int indice = 0;
