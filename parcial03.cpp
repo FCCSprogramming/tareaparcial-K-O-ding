@@ -3,8 +3,8 @@
 using namespace std;
 
 void imprimirLista(int*, float*, int n);
-void mergeSort(int * id, float* med, int inicio, int final);
-void merge(int * id, float* med, int inicio, int medio, int final);
+void mergeSort(int * id, float* med, int inicio, int final, int* temp_id, float* temp_med);
+void merge(int * id, float* med, int inicio, int medio, int final, int* temp_id, float* temp_med);
 void buscarMediciones(int*, float*, int n, int valor);
 
 int main(){
@@ -16,11 +16,15 @@ int main(){
 
     int n = 6;
 
+    // Se corrige el ejercicio declarando arreglos auxiliares de tamaño constante  
+    int temp_id[MAX];
+    float temp_med[MAX];
+
     cout<<"\nlista original: "<<endl;
     imprimirLista(id, med, n);
 
     cout<<"\nlista ordenada:"<<endl;
-    mergeSort(id, med, 0, n-1);
+    mergeSort(id, med, 0, n-1, temp_id, temp_med);
     imprimirLista(id, med, n);
 
     buscarMediciones(id, med, n, 2);
@@ -36,7 +40,7 @@ void imprimirLista(int* id, float* med, int n){
     }
     cout<<endl;
 }
-void mergeSort(int * id, float* med, int inicio, int final){
+void mergeSort(int* id, float* med, int inicio, int final, int* temp_id, float* temp_med){
     if (inicio>=final)
     {
         return;
@@ -44,43 +48,39 @@ void mergeSort(int * id, float* med, int inicio, int final){
 
     int medio  = inicio + (final - inicio)/2;
 
-    mergeSort(id, med, inicio, medio);
-    mergeSort(id, med, medio+1, final);
-    merge(id, med, inicio, medio, final);
+    mergeSort(id, med, inicio, medio, temp_id, temp_med);
+    mergeSort(id, med, medio+1, final, temp_id, temp_med);
+    merge(id, med, inicio, medio, final, temp_id, temp_med);
 }
-void merge(int * id, float* med, int inicio, int medio, int final){
+void merge(int* id, float* med, int inicio, int medio, int final, int* temp_id, float* temp_med){
     int n1 = medio - inicio + 1;
     int n2 = final - medio;
 
-    //Arreglos temporales para almacenar las mitades
-    int temp_id_izq[n1], temp_id_der[n2];
-    float temp_med_iz[n1], temp_med_der[n2];
 
-    for (int i = 0; i < n1; i++)
+    for (int i = 0; i < n1; i++) 
     {
-        *(temp_id_izq + i) = *(id + inicio + i);
-        *(temp_med_iz + i) = *(med + inicio + i);
+        *(temp_id + i) = *(id + inicio + i);
+        *(temp_med + i) = *(med + inicio + i);
     }
-    for (int j = 0; j < n2; j++)
+    
+    for (int j = 0; j < n2; j++) 
     {
-        *(temp_id_der + j) = *(id + medio + 1+ j);
-        *(temp_med_der + j) = *(med + medio +1 +j);
+        *(temp_id + n1 + j) = *(id + medio + 1 + j);
+        *(temp_med + n1 + j) = *(med + medio + 1 + j);
     }
     
     //indices
-    int i = 0, d = 0, k = inicio;
+    int i = 0, d = n1, k = inicio;
 
-    while (i<n1 && d<n2)
-    {
-        if (*(temp_id_izq + i) <= *(temp_id_der + d))
+    while (i<n1 && d< n1 + n2) {
+        if (*(temp_id + i) <= *(temp_id + d)) 
         {
-            *(id + k) = *(temp_id_izq + i);
-            *(med + k) = *(temp_med_iz + i); 
+            *(id + k) = *(temp_id + i);
+            *(med + k) = *(temp_med + i); 
             i++;
-        }else
-        {
-            *(id + k) = *(temp_id_der + d);
-            *(med + k) = *(temp_med_der + d); 
+        } else {
+            *(id + k) = *(temp_id + d);
+            *(med + k) = *(temp_med + d); 
             d++;
         }
         k++;
@@ -88,15 +88,15 @@ void merge(int * id, float* med, int inicio, int medio, int final){
     
     while (i < n1)
     {
-        *(id + k) = *(temp_id_izq + i);
-        *(med + k) = *(temp_med_iz + i);
+        *(id + k) = *(temp_id + i);
+        *(med + k) = *(temp_med + i);
         i++;
         k++;
     }
-    while (d < n2)
+    while (d < n1+n2)
     {
-        *(id + k) = *(temp_id_der + d);
-        *(med + k) = *(temp_med_der + d);
+        *(id + k) = *(temp_id + d);
+        *(med + k) = *(temp_med + d);
         d++;
         k++;
     }
