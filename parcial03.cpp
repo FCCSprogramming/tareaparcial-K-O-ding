@@ -1,3 +1,9 @@
+/*
+    Ejercicio 3:
+    Nombre y apellidos: Manuel Rojas Tuyen
+    Sección: A
+*/
+
 #include<iostream>
 #include<iomanip>
 using namespace std;
@@ -16,7 +22,7 @@ int main(){
 
     int n = 6;
 
-    // Se corrige el ejercicio declarando arreglos auxiliares de tamaño constante  
+    // Se corrige la logica de 'merge' y 'mergeSort' declarando arreglos auxiliares de tamaño constante  
     int temp_id[MAX];
     float temp_med[MAX];
 

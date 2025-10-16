@@ -1,3 +1,9 @@
+/*
+    Ejercicio 1:
+    Nombre y apellidos: Manuel Rojas Tuyen
+    Sección: A
+*/
+
 #include<iostream>
 #include<iomanip>
 using namespace std;

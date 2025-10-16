@@ -1,3 +1,9 @@
+/*
+    Ejercicio 2:
+    Nombre y apellidos: Manuel Rojas Tuyen
+    Sección: A
+*/
+
 #include<iostream>
 #include<cmath>
 #include<iomanip>

@@ -1,3 +1,9 @@
+/*
+    Ejercicio 4:
+    Nombre y apellidos: Manuel Rojas Tuyen
+    Sección: A
+*/
+
 #include<iostream>
 #include<cstring>
 using namespace std;
